@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Aurora Blog{% endblock %}</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #f3f4f6;
+        color: #111827;
+        line-height: 1.7;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: #eef2ff;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      header.site-header,
+      footer.site-footer {
+        width: 100%;
+        background: #111827;
+        color: #f9fafb;
+      }
+
+      header.site-header {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .page-shell {
+        width: min(1200px, calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 2rem 0 4rem;
+      }
+
+      .site-brand {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: 1.25rem 0;
+      }
+
+      .site-brand h1 {
+        margin: 0;
+        font-size: 1.4rem;
+        letter-spacing: -0.03em;
+      }
+
+      .site-brand h1 a {
+        color: #f9fafb;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .nav-links a {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        color: #f9fafb;
+        font-size: 0.95rem;
+      }
+
+      main.page-container {
+        width: min(1140px, calc(100% - 2rem));
+        margin: 0 auto;
+        padding: 2rem 0;
+      }
+
+      .hero-panel {
+        display: grid;
+        gap: 1.5rem;
+        background: linear-gradient(135deg, #4338ca 0%, #4f46e5 100%);
+        color: #ffffff;
+        padding: 2.5rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
+      }
+
+      .hero-panel h2 {
+        margin: 0 0 1rem;
+        font-size: clamp(2rem, 5vw, 3.25rem);
+        line-height: 1.02;
+      }
+
+      .hero-panel p {
+        margin: 0;
+        max-width: 55ch;
+        color: rgba(255, 255, 255, 0.9);
+      }
+
+      .button,
+      button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        border-radius: 999px;
+        padding: 0.95rem 1.4rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 150ms ease, background-color 150ms ease, color 150ms ease;
+      }
+
+      .button:hover,
+      button:hover {
+        transform: translateY(-1px);
+      }
+
+      .button--primary {
+        background: #4338ca;
+        color: #ffffff;
+      }
+
+      .button--secondary {
+        background: #e5e7eb;
+        color: #111827;
+      }
+
+      .button--tertiary {
+        background: transparent;
+        color: #4338ca;
+        border: 1px solid rgba(67, 56, 202, 0.16);
+      }
+
+      .button--danger {
+        background: #dc2626;
+        color: #ffffff;
+      }
+
+      .card,
+      .detail-card,
+      .form-card {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 1.25rem;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+        padding: 2rem;
+      }
+
+      .post-grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        margin-top: 2rem;
+      }
+
+      .post-card {
+        display: grid;
+        gap: 1.2rem;
+      }
+
+      .post-card__head {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: start;
+      }
+
+      .post-card h2,
+      .detail-header h1,
+      .form-header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+
+      .post-summary,
+      .content-block p,
+      .form-subtitle {
+        margin: 0;
+        color: #4b5563;
+      }
+
+      .post-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        font-size: 0.95rem;
+        color: #6b7280;
+      }
+
+      .badge {
+        display: inline-flex;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        background: #e0e7ff;
+        color: #3730a3;
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+
+      .action-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .form-header {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-fields {
+        display: grid;
+        gap: 1.25rem;
+      }
+
+      .form-field {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .form-field label {
+        display: inline-flex;
+        font-weight: 700;
+        color: #111827;
+      }
+
+      .form-field input,
+      .form-field textarea,
+      .form-field select {
+        width: 100%;
+        min-height: 3rem;
+        padding: 0.95rem 1rem;
+        border: 1px solid #d1d5db;
+        border-radius: 1rem;
+        background: #f8fafc;
+        color: #111827;
+        font: inherit;
+        transition: border-color 150ms ease, box-shadow 150ms ease;
+      }
+
+      .form-field textarea {
+        min-height: 12rem;
+        resize: vertical;
+      }
+
+      .form-field input:focus,
+      .form-field textarea:focus,
+      .form-field select:focus {
+        outline: none;
+        border-color: #4338ca;
+        box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.12);
+      }
+
+      .form-field .field-help {
+        color: #6b7280;
+        font-size: 0.95rem;
+      }
+
+      .form-field .field-errors {
+        color: #dc2626;
+        font-size: 0.95rem;
+      }
+
+      .form-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 3rem 2rem;
+        border-radius: 1.25rem;
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+      }
+
+      footer.site-footer {
+        padding: 1.5rem 0;
+        text-align: center;
+        font-size: 0.95rem;
+        color: #d1d5db;
+      }
+
+      @media (max-width: 740px) {
+        .site-brand {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .nav-links {
+          width: 100%;
+          justify-content: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="page-shell site-brand">
+        <h1><a href="{% url 'blogapp:index' %}">Aurora Blog</a></h1>
+        <nav class="nav-links">
+          <a href="{% url 'blogapp:index' %}">Home</a>
+          <a href="{% url 'blogapp:create' %}">Create post</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="page-container">
+      <div class="page-shell">
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="page-shell">
+        <p>© {% now "Y" %} Aurora Blog. Clean publishing for modern writers.</p>
+      </div>
+    </footer>
+  </body>
+</html>

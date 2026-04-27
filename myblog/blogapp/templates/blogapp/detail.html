@@ -1,0 +1,40 @@
+{% extends "blogapp/base.html" %}
+
+{% block title %}{{ post.title }} | Aurora Blog{% endblock %}
+
+{% block content %}
+<article class="detail-card">
+  <div class="detail-header">
+    <div>
+      <p class="eyebrow">Featured story</p>
+      <h1>{{ post.title }}</h1>
+      <p class="post-summary">{{ post.summary }}</p>
+    </div>
+    <div class="post-meta">
+      <span>{{ post.published_date|date:"F j, Y" }}</span>
+      <span>Updated {{ post.updated_at|date:"F j, Y" }}</span>
+      <span class="badge">{{ post.is_published|yesno:"Published,Draft" }}</span>
+    </div>
+  </div>
+
+  <div class="content-block">
+    {{ post.content|linebreaksbr }}
+  </div>
+
+  <div class="action-row">
+    <a class="button button--primary" href="{% url 'blogapp:update' post.id %}">Edit post</a>
+    <a class="button button--secondary" href="{% url 'blogapp:delete' post.id %}">Delete post</a>
+    <form method="post" action="{% url 'blogapp:toggle_published' post.id %}">
+      {% csrf_token %}
+      <input type="hidden" name="from_page" value="detail">
+      <button class="button button--tertiary" type="submit">
+        {% if post.is_published %}
+          Unpublish
+        {% else %}
+          Publish
+        {% endif %}
+      </button>
+    </form>
+  </div>
+</article>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "blogapp/base.html" %}
+
+{% block title %}Home | Aurora Blog{% endblock %}
+
+{% block content %}
+<section class="hero-panel">
+  <div>
+    <p class="eyebrow">Thoughtful writing for every reader</p>
+    <h2>Share stories, guides, and ideas with a polished blog experience.</h2>
+    <p>Manage posts, publish when ready, and keep your audience informed with a clean editorial layout.</p>
+  </div>
+</section>
+
+<section class="post-grid">
+  {% if posts %}
+    {% for post in posts %}
+      <article class="card post-card">
+        <div class="post-card__head">
+          <div>
+            <h2>{{ post.title }}</h2>
+            <p class="post-summary">{{ post.summary }}</p>
+          </div>
+          <span class="badge">{{ post.is_published|yesno:"Published,Draft" }}</span>
+        </div>
+        <div class="post-meta">
+          <span>{{ post.published_date|date:"M d, Y" }}</span>
+          <span>Updated {{ post.updated_at|date:"M d, Y" }}</span>
+        </div>
+        <a class="button button--primary" href="{% url 'blogapp:detail' post.id %}">Read full article</a>
+      </article>
+    {% endfor %}
+  {% else %}
+    <div class="empty-state">
+      <p>No posts have been published yet.</p>
+      <a class="button button--primary" href="{% url 'blogapp:create' %}">Create your first post</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

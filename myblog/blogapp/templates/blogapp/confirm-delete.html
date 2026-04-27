@@ -1,0 +1,21 @@
+{% extends "blogapp/base.html" %}
+
+{% block title %}Delete post | Aurora Blog{% endblock %}
+
+{% block content %}
+<div class="form-card">
+  <div class="form-header">
+    <p class="eyebrow">Confirm deletion</p>
+    <h1>Delete “{{ post.title }}”?</h1>
+    <p class="form-subtitle">This action cannot be undone. The post will be removed permanently.</p>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-actions">
+      <button class="button button--danger" type="submit">Delete post</button>
+      <a class="button button--secondary" href="{% url 'blogapp:detail' post.id %}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

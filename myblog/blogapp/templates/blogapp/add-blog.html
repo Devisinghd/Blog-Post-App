@@ -1,0 +1,77 @@
+{% extends "blogapp/base.html" %}
+
+{% block title %}{% if form.instance.pk %}Edit post | Aurora Blog{% else %}New post | Aurora Blog{% endif %}{% endblock %}
+
+{% block content %}
+<div class="form-card">
+  <div class="form-header">
+    <p class="eyebrow">Editorial workspace</p>
+    <h1>{% if form.instance.pk %}Edit post{% else %}Create a new blog post{% endif %}</h1>
+    <p class="form-subtitle">Write a concise title, add a meaningful summary, and publish when the story is ready.</p>
+  </div>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-fields">
+      {% if form.non_field_errors %}
+        <div class="field-errors">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <div class="form-field">
+        {{ form.title.label_tag }}
+        {{ form.title }}
+        {% if form.title.errors %}
+          <div class="field-errors">{{ form.title.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-field">
+        {{ form.summary.label_tag }}
+        {{ form.summary }}
+        {% if form.summary.errors %}
+          <div class="field-errors">{{ form.summary.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-field">
+        {{ form.slug.label_tag }}
+        {{ form.slug }}
+        {% if form.slug.errors %}
+          <div class="field-errors">{{ form.slug.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-field">
+        {{ form.content.label_tag }}
+        {{ form.content }}
+        {% if form.content.errors %}
+          <div class="field-errors">{{ form.content.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-field">
+        {{ form.published_date.label_tag }}
+        {{ form.published_date }}
+        {% if form.published_date.errors %}
+          <div class="field-errors">{{ form.published_date.errors }}</div>
+        {% endif %}
+      </div>
+
+      <div class="form-field">
+        {{ form.is_published }}
+        {{ form.is_published.label_tag }}
+        {% if form.is_published.errors %}
+          <div class="field-errors">{{ form.is_published.errors }}</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="button button--primary" type="submit">
+        {% if form.instance.pk %}Update post{% else %}Publish post{% endif %}
+      </button>
+      <a class="button button--secondary" href="{% url 'blogapp:index' %}">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %} 
